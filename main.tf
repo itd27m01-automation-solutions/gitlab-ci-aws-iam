@@ -58,3 +58,15 @@ resource "aws_iam_role_policy" "gitlab_iam_policy" {
 }
 EOF
 }
+
+resource "aws_ssm_parameter" "gitlab_iam_profile_name" {
+  name        = "/gitlab/${var.environment}/iam/profile"
+  description = "The name of IAM profile for GitLab instances"
+  type        = "String"
+  value       = aws_iam_instance_profile.gitlab_iam_profile.name
+
+  tags = {
+    Terraform   = "true"
+    Environment = var.environment
+  }
+}
